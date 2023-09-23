@@ -7,6 +7,7 @@ import oksana.dvornitska.services.interfaces.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,10 +41,21 @@ public class UserService implements UserServiceI {
 
     @Override
     public List<UserDto> findFriendsByCountry(String userName, String country) {
-        Optional<User> user = userRepository.findUserByName(userName);
-        if(user.isEmpty()){
-
+        Optional<User> userOptional = userRepository.findUserByName(userName);
+        List<UserDto> userDtos = new ArrayList<>();
+        if(userOptional.isEmpty()){
+            return userDtos;
         }
-        return null;
+        User user = userOptional.get();
+        for (User friend: user.getFriends())
+        {
+           if (friend.getCountry().equals(country)){
+               UserDto userDto = new UserDto();
+               userDto.setId(friend.getId());
+               userDto.setName(friend.getName());
+               userDtos.add(userDto);
+           }
+        }
+        return userDtos;
     }
 }

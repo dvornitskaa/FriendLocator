@@ -26,8 +26,7 @@ public class UserController {
     }
     @GetMapping ("findFriendsByCountry")
     public ResponseEntity<List<UserDto>> findFriendsByCountry (String userName, String country){
-        //return ResponseEntity.ok();
-        return null;
+        return ResponseEntity.ok(userService.findFriendsByCountry(userName,country));
     }
 
 }
