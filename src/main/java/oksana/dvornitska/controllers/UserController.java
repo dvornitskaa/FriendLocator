@@ -28,5 +28,8 @@ public class UserController {
     public ResponseEntity<List<UserDto>> findFriendsByCountry (String userName, String country){
         return ResponseEntity.ok(userService.findFriendsByCountry(userName,country));
     }
-
+    @GetMapping("findFriends")
+    public ResponseEntity<List<UserDto>> findFriends (String userName){
+        return ResponseEntity.ok(userService.findAllFriendsLocation(userName));
+    }
 }

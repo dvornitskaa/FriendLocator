@@ -28,13 +28,14 @@ public class UserService implements UserServiceI {
     public String makeFriend(String userName, String friendName) {
         Optional<User> user = userRepository.findUserByName(userName);
         Optional<User> userFriend = userRepository.findUserByName(friendName);
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             return "user does not exist";
         }
-        if (userFriend.isEmpty()){
+        if (userFriend.isEmpty()) {
             return "friend does not exist";
         }
         user.get().getFriends().add(userFriend.get());
+        userFriend.get().getFriends().add(user.get());
         userRepository.save(user.get());
         return "friend is added";
     }
@@ -43,18 +44,35 @@ public class UserService implements UserServiceI {
     public List<UserDto> findFriendsByCountry(String userName, String country) {
         Optional<User> userOptional = userRepository.findUserByName(userName);
         List<UserDto> userDtos = new ArrayList<>();
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             return userDtos;
         }
         User user = userOptional.get();
-        for (User friend: user.getFriends())
-        {
-           if (friend.getCountry().equals(country)){
-               UserDto userDto = new UserDto();
-               userDto.setId(friend.getId());
-               userDto.setName(friend.getName());
-               userDtos.add(userDto);
-           }
+        for (User friend : user.getFriends()) {
+            if (friend.getCountry().equals(country)) {
+                UserDto userDto = new UserDto();
+                userDto.setId(friend.getId());
+                userDto.setName(friend.getName());
+                userDtos.add(userDto);
+            }
+        }
+        return userDtos;
+    }
+
+    @Override
+    public List<UserDto> findAllFriendsLocation(String userName) {
+        Optional<User> userOptional = userRepository.findUserByName(userName);
+        List<UserDto> userDtos = new ArrayList<>();
+        if (userOptional.isEmpty()) {
+            return userDtos;
+        }
+        User user = userOptional.get();
+        for (User friend : user.getFriends()) {
+            UserDto userDto = new UserDto();
+            userDto.setId(friend.getId());
+            userDto.setName(friend.getName());
+            userDto.setCountry(friend.getCountry());
+            userDtos.add(userDto);
         }
         return userDtos;
     }
