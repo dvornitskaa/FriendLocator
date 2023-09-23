@@ -91,4 +91,12 @@ public class UserService implements UserServiceI {
         }
         return userDtos;
     }
+
+    @Override
+    public List<Country> locationHistory(String userName) {
+        User user = userRepository.findUserByName(userName)
+                .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
+
+        return user.getCountries();
+    }
 }

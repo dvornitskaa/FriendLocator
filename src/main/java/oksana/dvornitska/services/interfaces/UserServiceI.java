@@ -2,6 +2,7 @@ package oksana.dvornitska.services.interfaces;
 
 
 import oksana.dvornitska.dto.UserDto;
+import oksana.dvornitska.entities.Country;
 
 import java.util.List;
 
@@ -11,5 +12,6 @@ public interface UserServiceI {
     String updateCountry(String userName, String country);
     List<UserDto> findFriendsByCountry (String userName, String country);
     List<UserDto> findAllFriendsLocation (String userName);
+    List<Country> locationHistory (String userName);
 
 }
