@@ -32,4 +32,8 @@ public class UserController {
     public ResponseEntity<List<UserDto>> findFriends (String userName){
         return ResponseEntity.ok(userService.findAllFriendsLocation(userName));
     }
+    @PostMapping("updateCountry")
+    public ResponseEntity<String> updateCountry(String userName, String country){
+        return ResponseEntity.ok(userService.updateCountry(userName,country));
+    }
 }

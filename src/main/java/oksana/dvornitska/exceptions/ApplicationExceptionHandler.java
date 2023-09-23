@@ -13,7 +13,7 @@ public class ApplicationExceptionHandler {
         e.printStackTrace();
         return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
     }
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handlerEntityNotFound(Exception e){
         e.printStackTrace();
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

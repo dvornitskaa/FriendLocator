@@ -18,11 +18,4 @@ public class UserDto {
     String name;
     String country;
 
-
-    List<UserDto> friends;
-
-    public UserDto(String name, String country) {
-        this.name = name;
-        this.country = country;
-    }
 }
