@@ -8,11 +8,12 @@ import lombok.experimental.FieldDefaults;
 
 @Data //getter
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
+//@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDto {
-    Integer id;
-    String name;
-    String country;
+public class CountryStatisticsDto {
+    private String country;
+    private long userCount;
+    private double userPercentage;
 
 }

@@ -1,5 +1,6 @@
 package oksana.dvornitska.services;
 
+import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.UserDto;
 import oksana.dvornitska.entities.Country;
 import oksana.dvornitska.entities.User;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserServiceI {
@@ -98,5 +101,18 @@ public class UserService implements UserServiceI {
                 .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
 
         return user.getCountries();
+    }
+
+    @Override
+    public List<UserDto> findUser(String userName) {
+        return userRepository.findUsersByNameStartsWith(userName).stream()
+                .map(UserMapper.INSTANCE::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public HashMap<String, Double> getCountryStatistics() {
+        return (HashMap<String, Double>) userRepository.getCountryStatisticsAsMap();
+
     }
 }

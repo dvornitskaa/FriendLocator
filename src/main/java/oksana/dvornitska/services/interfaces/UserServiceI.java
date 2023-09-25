@@ -1,9 +1,11 @@
 package oksana.dvornitska.services.interfaces;
 
 
+import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.UserDto;
 import oksana.dvornitska.entities.Country;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface UserServiceI {
@@ -13,5 +15,7 @@ public interface UserServiceI {
     List<UserDto> findFriendsByCountry (String userName, String country);
     List<UserDto> findAllFriendsLocation (String userName);
     List<Country> locationHistory (String userName);
+    List<UserDto> findUser (String userName);
+    HashMap<String, Double> getCountryStatistics();
 
 }

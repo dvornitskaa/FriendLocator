@@ -1,5 +1,6 @@
 package oksana.dvornitska.controllers;
 
+import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.UserDto;
 import oksana.dvornitska.entities.Country;
 import oksana.dvornitska.services.UserService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -37,10 +39,16 @@ public class UserController {
     public ResponseEntity<String> updateCountry(String userName, String country){
         return ResponseEntity.ok(userService.updateCountry(userName,country));
     }
-//    @GetMapping("statistics")
-//    public ResponseEntity<>
+    @GetMapping("statistics")
+    public ResponseEntity<HashMap<String, Double>> statistics(){
+        return ResponseEntity.ok(userService.getCountryStatistics());
+    }
     @GetMapping("history")
     public ResponseEntity<List<Country>> locationHistory(String userName){
         return ResponseEntity.ok(userService.locationHistory(userName));
+    }
+    @GetMapping("findUser")
+    public ResponseEntity<List<UserDto>> findUser(String userName){
+        return  ResponseEntity.ok(userService.findUser(userName));
     }
 }
