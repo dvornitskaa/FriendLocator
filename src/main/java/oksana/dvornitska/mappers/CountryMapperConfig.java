@@ -11,6 +11,7 @@ public interface CountryMapperConfig {
     @Mappings({
             @Mapping(target = "id", source = "id"),
             @Mapping(target = "name", source = "name"),
+            @Mapping(target = "city", source = "city"),
 
     })
     CountryDto mapToDto(Country country);

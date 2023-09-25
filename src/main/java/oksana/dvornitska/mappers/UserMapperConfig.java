@@ -15,8 +15,16 @@ public interface UserMapperConfig {
             @Mapping(target = "id", source = "id"),
             @Mapping(target = "name", source = "name"),
             @Mapping(target = "country", source = "country"),
+            @Mapping(target = "city", source = "city"),
 
     })
     UserDto mapToDto(User user);
+    @Mappings({
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "name", source = "name"),
+            @Mapping(target = "country", source = "country"),
+            @Mapping(target = "city", source = "city"),
+
+    })
     User mapToEntity(UserDto userDto);
 }

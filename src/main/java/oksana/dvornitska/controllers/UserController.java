@@ -1,6 +1,7 @@
 package oksana.dvornitska.controllers;
 
 import oksana.dvornitska.dto.CountryStatisticsDto;
+import oksana.dvornitska.dto.PostDto;
 import oksana.dvornitska.dto.UserDto;
 import oksana.dvornitska.entities.Country;
 import oksana.dvornitska.services.UserService;
@@ -36,8 +37,8 @@ public class UserController {
         return ResponseEntity.ok(userService.findAllFriendsLocation(userName));
     }
     @PostMapping("updateCountry")
-    public ResponseEntity<String> updateCountry(String userName, String country){
-        return ResponseEntity.ok(userService.updateCountry(userName,country));
+    public ResponseEntity<String> updateCountry(String userName, String country, String city){
+        return ResponseEntity.ok(userService.updateCountry(userName,country, city));
     }
     @GetMapping("statistics")
     public ResponseEntity<HashMap<String, Double>> statistics(){
@@ -50,5 +51,10 @@ public class UserController {
     @GetMapping("findUser")
     public ResponseEntity<List<UserDto>> findUser(String userName){
         return  ResponseEntity.ok(userService.findUser(userName));
+    }
+    @PostMapping("addPost")
+    public ResponseEntity<String> addPost(@RequestBody PostDto postDto){
+        userService.addPost(postDto);
+        return  ResponseEntity.ok("");
     }
 }

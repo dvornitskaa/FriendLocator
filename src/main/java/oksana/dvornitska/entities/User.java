@@ -21,6 +21,7 @@ public class User {
     Integer id;
     String name;
     String country;
+    String city;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -39,5 +40,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "country_id"))
     List<Country> countries = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Post> posts = new ArrayList<>();
 
 }

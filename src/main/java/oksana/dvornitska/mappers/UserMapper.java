@@ -11,4 +11,6 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
     @InheritConfiguration
     UserDto mapToDto(User user);
+    @InheritConfiguration
+    User mapToEntity(UserDto userDto);
 }
