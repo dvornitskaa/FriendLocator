@@ -1,5 +1,6 @@
 package oksana.dvornitska.services;
 
+import oksana.dvornitska.dto.CountryDto;
 import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.PostDto;
 import oksana.dvornitska.dto.UserDto;
@@ -7,6 +8,8 @@ import oksana.dvornitska.entities.Country;
 import oksana.dvornitska.entities.Post;
 import oksana.dvornitska.entities.User;
 import oksana.dvornitska.exceptions.UserNotFoundException;
+import oksana.dvornitska.mappers.CountryMapper;
+import oksana.dvornitska.mappers.PostMapper;
 import oksana.dvornitska.mappers.UserMapper;
 import oksana.dvornitska.repositories.CountryRepository;
 import oksana.dvornitska.repositories.PostRepository;
@@ -63,6 +66,7 @@ public class UserService implements UserServiceI {
         user.setCity(city);
         Country countryEntity = new Country();
         countryEntity.setName(country);
+        countryEntity.setCity(city);
         user.getCountries().add(countryEntity);
         countryRepository.save(countryEntity);
         userRepository.save(user);
@@ -102,11 +106,13 @@ public class UserService implements UserServiceI {
     }
 
     @Override
-    public List<Country> locationHistory(String userName) {
+    public List<CountryDto> locationHistory(String userName) {
         User user = userRepository.findUserByName(userName)
                 .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
 
-        return user.getCountries();
+        return user.getCountries().stream()
+                .map(CountryMapper.INSTANCE::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -138,5 +144,17 @@ public class UserService implements UserServiceI {
         countryRepository.save(country);
         postRepository.save(post);
         return "post added";
+    }
+
+    @Override
+    public List<PostDto> allFriendsPosts(String userName) {
+        User user = userRepository.findUserByName(userName)
+                .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
+
+        return user.getFriends().stream()
+                .flatMap(friend -> friend.getPosts().stream()) // "Разворачиваем" вложенные списки Post
+                .map(PostMapper.INSTANCE::mapToDto) // Применяем маппинг к каждому Post
+                .collect(Collectors.toList());
+
     }
 }

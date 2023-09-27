@@ -1,6 +1,7 @@
 package oksana.dvornitska.services.interfaces;
 
 
+import oksana.dvornitska.dto.CountryDto;
 import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.PostDto;
 import oksana.dvornitska.dto.UserDto;
@@ -15,9 +16,10 @@ public interface UserServiceI {
     String updateCountry(String userName, String country, String city);
     List<UserDto> findFriendsByCountry (String userName, String country);
     List<UserDto> findAllFriendsLocation (String userName);
-    List<Country> locationHistory (String userName);
+    List<CountryDto> locationHistory (String userName);
     List<UserDto> findUser (String userName);
     HashMap<String, Double> getCountryStatistics();
     String addPost(PostDto postDto);
+    List<PostDto> allFriendsPosts(String userName);
 
 }

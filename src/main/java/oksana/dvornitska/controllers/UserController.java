@@ -1,5 +1,6 @@
 package oksana.dvornitska.controllers;
 
+import oksana.dvornitska.dto.CountryDto;
 import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.PostDto;
 import oksana.dvornitska.dto.UserDto;
@@ -45,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getCountryStatistics());
     }
     @GetMapping("history")
-    public ResponseEntity<List<Country>> locationHistory(String userName){
+    public ResponseEntity<List<CountryDto>> locationHistory(String userName){
         return ResponseEntity.ok(userService.locationHistory(userName));
     }
     @GetMapping("findUser")
@@ -56,5 +57,9 @@ public class UserController {
     public ResponseEntity<String> addPost(@RequestBody PostDto postDto){
         userService.addPost(postDto);
         return  ResponseEntity.ok("");
+    }
+    @GetMapping("postFeed")
+    public ResponseEntity<List<PostDto>> postFeed(String username){
+        return null;
     }
 }
