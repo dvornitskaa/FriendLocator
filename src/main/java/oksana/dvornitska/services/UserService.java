@@ -1,5 +1,7 @@
 package oksana.dvornitska.services;
 
+
+import lombok.extern.slf4j.Slf4j;
 import oksana.dvornitska.dto.CountryDto;
 import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.PostDto;
@@ -23,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 public class UserService implements UserServiceI {
     @Autowired
@@ -55,6 +57,7 @@ public class UserService implements UserServiceI {
         user.getFriends().add(userFriend);
         userFriend.getFriends().add(user);
         userRepository.save(user);
+        log.info(String.format("%s friend is added to %s", friendName,userName));
         return "friend is added";
     }
 

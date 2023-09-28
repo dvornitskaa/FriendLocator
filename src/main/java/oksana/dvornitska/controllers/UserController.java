@@ -60,6 +60,6 @@ public class UserController {
     }
     @GetMapping("postFeed")
     public ResponseEntity<List<PostDto>> postFeed(String username){
-        return null;
+        return ResponseEntity.ok(userService.allFriendsPosts(username));
     }
 }
