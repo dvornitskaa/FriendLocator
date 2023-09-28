@@ -23,8 +23,8 @@ public class Post {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
     Date plannedDate;
     @ManyToOne
-    @JoinColumn(name = "country_id") // Связь будет установлена через поле country_id в таблице постов
-    Country country;
+    @JoinColumn(name = "location_id") // Связь будет установлена через поле location_id в таблице постов
+    Location location;
     @ManyToOne
     @JoinColumn(name = "user_id") // Связь будет установлена через поле user_id в таблице постов
     User user;

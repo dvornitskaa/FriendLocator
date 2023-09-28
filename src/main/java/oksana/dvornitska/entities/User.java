@@ -36,10 +36,10 @@ public class User {
     @EqualsAndHashCode.Exclude
     @ManyToMany
     @JoinTable(
-            name = "users_countries",
+            name = "users_locations",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "country_id"))
-    List<Country> countries = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
+    List<Location> countries = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Post> posts = new ArrayList<>();
 

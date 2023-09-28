@@ -7,12 +7,12 @@ import lombok.experimental.FieldDefaults;
 
 @Entity
 @Data
-@Table(name = "countries")
+@Table(name = "locations")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Country {
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name;
+    String country;
     String city;
 }

@@ -1,10 +1,12 @@
 package oksana.dvornitska.controllers;
 
-import oksana.dvornitska.dto.CountryDto;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import oksana.dvornitska.dto.LocationDto;
 import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.PostDto;
 import oksana.dvornitska.dto.UserDto;
-import oksana.dvornitska.entities.Country;
+
 import oksana.dvornitska.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +17,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserController {
     @Autowired
-    private UserService userService;
+    UserService userService;
 
 
     @PostMapping
-    public ResponseEntity<String> addUser(@RequestBody UserDto userDto){
+    public ResponseEntity<String> create(@RequestBody UserDto userDto){
         userService.addUser(userDto);
         return ResponseEntity.ok("");
     }
-    @PostMapping("makeFriend")
-    public ResponseEntity<String> makeFriend(String userName, String friendName){
+    @PostMapping("makeFriend")//
+    public ResponseEntity<String> friend(String userName, String friendName){
         return ResponseEntity.ok(userService.makeFriend(userName,friendName));
     }
     @GetMapping ("findFriendsByCountry")
@@ -39,27 +42,19 @@ public class UserController {
     }
     @PostMapping("updateCountry")
     public ResponseEntity<String> updateCountry(String userName, String country, String city){
-        return ResponseEntity.ok(userService.updateCountry(userName,country, city));
+        return ResponseEntity.ok(userService.updateLocation(userName,country, city));
     }
     @GetMapping("statistics")
     public ResponseEntity<HashMap<String, Double>> statistics(){
         return ResponseEntity.ok(userService.getCountryStatistics());
     }
     @GetMapping("history")
-    public ResponseEntity<List<CountryDto>> locationHistory(String userName){
+    public ResponseEntity<List<LocationDto>> locationHistory(String userName){
         return ResponseEntity.ok(userService.locationHistory(userName));
     }
     @GetMapping("findUser")
     public ResponseEntity<List<UserDto>> findUser(String userName){
         return  ResponseEntity.ok(userService.findUser(userName));
     }
-    @PostMapping("addPost")
-    public ResponseEntity<String> addPost(@RequestBody PostDto postDto){
-        userService.addPost(postDto);
-        return  ResponseEntity.ok("");
-    }
-    @GetMapping("postFeed")
-    public ResponseEntity<List<PostDto>> postFeed(String username){
-        return ResponseEntity.ok(userService.allFriendsPosts(username));
-    }
+
 }

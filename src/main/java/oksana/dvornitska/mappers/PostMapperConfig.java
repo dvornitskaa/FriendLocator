@@ -13,8 +13,8 @@ public interface PostMapperConfig {
             @Mapping(target = "text", source = "text"),
             @Mapping(target = "plannedDate", source = "plannedDate"),
             @Mapping(target = "username", source = "user.name"),
-            @Mapping(target = "country", source = "country.name"),
-            @Mapping(target = "city", source = "country.city"),
+            @Mapping(target = "country", source = "location.country"),
+            @Mapping(target = "city", source = "location.city"),
 
     })
     PostDto mapToDto(Post post);

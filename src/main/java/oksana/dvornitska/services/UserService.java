@@ -1,19 +1,21 @@
 package oksana.dvornitska.services;
 
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import oksana.dvornitska.dto.CountryDto;
+import oksana.dvornitska.dto.LocationDto;
 import oksana.dvornitska.dto.CountryStatisticsDto;
 import oksana.dvornitska.dto.PostDto;
 import oksana.dvornitska.dto.UserDto;
-import oksana.dvornitska.entities.Country;
+import oksana.dvornitska.entities.Location;
 import oksana.dvornitska.entities.Post;
 import oksana.dvornitska.entities.User;
 import oksana.dvornitska.exceptions.UserNotFoundException;
-import oksana.dvornitska.mappers.CountryMapper;
+import oksana.dvornitska.mappers.LocationMapper;
 import oksana.dvornitska.mappers.PostMapper;
 import oksana.dvornitska.mappers.UserMapper;
-import oksana.dvornitska.repositories.CountryRepository;
+import oksana.dvornitska.repositories.LocationRepository;
 import oksana.dvornitska.repositories.PostRepository;
 import oksana.dvornitska.repositories.UserRepository;
 import oksana.dvornitska.services.interfaces.UserServiceI;
@@ -27,23 +29,25 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 @Slf4j
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserService implements UserServiceI {
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
     @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
-    private PostRepository postRepository;
+    LocationRepository locationRepository;
+
 
     @Override
     public void addUser(UserDto userDto) {
         User user = UserMapper.INSTANCE.mapToEntity(userDto);
-        Country country = new Country();
-        country.setName(userDto.getCountry());
+        Location location = new Location();
+        location.setCountry(userDto.getCountry());
+        location.setCity(userDto.getCity());
+
 //        user.setName(userDto.getName());
-//        user.setCountry(userDto.getCountry());
+//        user.setLocation(userDto.getCountry());
 //        user.getCountries().add(country);
-        countryRepository.save(country);
+        locationRepository.save(location);
         userRepository.save(user);
     }
 
@@ -62,18 +66,18 @@ public class UserService implements UserServiceI {
     }
 
     @Override
-    public String updateCountry(String userName, String country, String city) {
+    public String updateLocation(String userName, String country, String city) {
         User user = userRepository.findUserByName(userName)
                 .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
         user.setCountry(country);
         user.setCity(city);
-        Country countryEntity = new Country();
-        countryEntity.setName(country);
-        countryEntity.setCity(city);
-        user.getCountries().add(countryEntity);
-        countryRepository.save(countryEntity);
+        Location locationEntity = new Location();
+        locationEntity.setCountry(country);
+        locationEntity.setCity(city);
+        user.getCountries().add(locationEntity);
+        locationRepository.save(locationEntity);
         userRepository.save(user);
-        return "country updated";
+        return "location updated";
     }
 
     @Override
@@ -109,12 +113,12 @@ public class UserService implements UserServiceI {
     }
 
     @Override
-    public List<CountryDto> locationHistory(String userName) {
+    public List<LocationDto> locationHistory(String userName) {
         User user = userRepository.findUserByName(userName)
                 .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
 
         return user.getCountries().stream()
-                .map(CountryMapper.INSTANCE::mapToDto)
+                .map(LocationMapper.INSTANCE::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -131,33 +135,5 @@ public class UserService implements UserServiceI {
 
     }
 
-    @Override
-    public String addPost(PostDto postDto) {
-        User user = userRepository.findUserByName(postDto.getUsername())
-                .orElseThrow(()-> new UserNotFoundException(postDto.getUsername() + " does not exist"));
-        Post post = new Post();
 
-        post.setText(postDto.getText());
-        post.setPlannedDate(postDto.getPlannedDate());
-        Country country = new Country();
-        country.setName(postDto.getCountry());
-        country.setCity(postDto.getCity());
-        post.setCountry(country);
-        post.setUser(user);
-        countryRepository.save(country);
-        postRepository.save(post);
-        return "post added";
-    }
-
-    @Override
-    public List<PostDto> allFriendsPosts(String userName) {
-        User user = userRepository.findUserByName(userName)
-                .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
-
-        return user.getFriends().stream()
-                .flatMap(friend -> friend.getPosts().stream()) // "Разворачиваем" вложенные списки Post
-                .map(PostMapper.INSTANCE::mapToDto) // Применяем маппинг к каждому Post
-                .collect(Collectors.toList());
-
-    }
 }
