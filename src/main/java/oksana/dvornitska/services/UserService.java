@@ -44,9 +44,6 @@ public class UserService implements UserServiceI {
         location.setCountry(userDto.getCountry());
         location.setCity(userDto.getCity());
 
-//        user.setName(userDto.getName());
-//        user.setLocation(userDto.getCountry());
-//        user.getCountries().add(country);
         locationRepository.save(location);
         userRepository.save(user);
     }
@@ -61,6 +58,7 @@ public class UserService implements UserServiceI {
         user.getFriends().add(userFriend);
         userFriend.getFriends().add(user);
         userRepository.save(user);
+        userRepository.save(userFriend);
         log.info(String.format("%s friend is added to %s", friendName,userName));
         return "friend is added";
     }
@@ -85,7 +83,7 @@ public class UserService implements UserServiceI {
         User user = userRepository.findUserByName(userName)
                 .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
         List<UserDto> userDtos = new ArrayList<>();
-        for (User friend : user.getFriends()) {
+        for (User friend : user.getFriends()) { ///stream TODO
             if (friend.getCountry().equals(country)) {
                 UserDto userDto = new UserDto();
                 //UserDto userDto = UserMapper.INSTANCE.mapToDto(user);//????
