@@ -28,30 +28,8 @@ public class UserController {
         userService.addUser(userDto);
         return ResponseEntity.ok("");
     }
-    @PostMapping("makeFriend")//
-    public ResponseEntity<String> friend(String userName, String friendName){
-        return ResponseEntity.ok(userService.makeFriend(userName,friendName));
-    }
-    @GetMapping ("findFriendsByCountry")
-    public ResponseEntity<List<UserDto>> findFriendsByCountry (String userName, String country){
-        return ResponseEntity.ok(userService.findFriendsByCountry(userName,country));
-    }
-    @GetMapping("findFriends")
-    public ResponseEntity<List<UserDto>> findFriends (String userName){
-        return ResponseEntity.ok(userService.findAllFriendsLocation(userName));
-    }
-    @PostMapping("updateCountry")
-    public ResponseEntity<String> updateCountry(String userName, String country, String city){
-        return ResponseEntity.ok(userService.updateLocation(userName,country, city));
-    }
-    @GetMapping("statistics")
-    public ResponseEntity<HashMap<String, Double>> statistics(){
-        return ResponseEntity.ok(userService.getCountryStatistics());
-    }
-    @GetMapping("history")
-    public ResponseEntity<List<LocationDto>> locationHistory(String userName){
-        return ResponseEntity.ok(userService.locationHistory(userName));
-    }
+
+
     @GetMapping("findUser")
     public ResponseEntity<List<UserDto>> findUser(String userName){
         return  ResponseEntity.ok(userService.findUser(userName));
