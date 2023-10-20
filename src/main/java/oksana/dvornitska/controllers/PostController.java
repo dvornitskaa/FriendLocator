@@ -23,6 +23,6 @@ public class PostController {
     }
     @GetMapping("feed")
     public ResponseEntity<List<PostDto>> feed(String username){
-        return ResponseEntity.ok(postService.allFriendsPosts(username));
+        return ResponseEntity.ok(postService.allPosts(username));
     }
 }

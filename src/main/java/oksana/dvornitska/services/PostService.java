@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -33,28 +34,29 @@ public class PostService implements PostServiceI {
     public String addPost(PostDto postDto) {
         User user = userRepository.findUserByName(postDto.getUsername())
                 .orElseThrow(()-> new UserNotFoundException(postDto.getUsername() + " does not exist"));
-        Post post = new Post();
-
-        post.setText(postDto.getText());
-        post.setPlannedDate(postDto.getPlannedDate());
-        Location location = new Location();
-        location.setCountry(postDto.getCountry());
-        location.setCity(postDto.getCity());
-        post.setLocation(location);
+        Post post = PostMapper.INSTANCE.mapToEntity(postDto);
         post.setUser(user);
-        locationRepository.save(location);
+        locationRepository.save(post.getLocation());
+        userRepository.save(user);
         postRepository.save(post);
         return "post added";
     }
 
     @Override
-    public List<PostDto> allFriendsPosts(String userName) {
+    public List<PostDto> allPosts(String userName) {
         User user = userRepository.findUserByName(userName)
                 .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
 
-        return user.getFriends().stream()
+        List<PostDto> postDtoListPrivate = user.getFriends().stream()
                 .flatMap(friend -> friend.getPosts().stream()) // "Разворачиваем" вложенные списки Post
+                .filter(post -> post.getPrivateCheck()) // Фильтруем по privateCheck == true
                 .map(PostMapper.INSTANCE::mapToDto) // Применяем маппинг к каждому Post
+                .collect(Collectors.toList());
+        List<PostDto> postDtoListPublic = postRepository.findAll().stream()
+                .filter(post -> !post.getPrivateCheck()) // Фильтруем по privateCheck == true
+                .map(PostMapper.INSTANCE::mapToDto) // Применяем маппинг к каждому Post
+                .collect(Collectors.toList());
+        return Stream.concat(postDtoListPrivate.stream(), postDtoListPublic.stream())
                 .collect(Collectors.toList());
 
     }

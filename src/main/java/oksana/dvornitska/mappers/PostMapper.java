@@ -13,6 +13,6 @@ public interface PostMapper {
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
     @InheritConfiguration
     PostDto mapToDto(Post post);
-//    @InheritConfiguration
-//    Post mapToEntity(PostDto postDto);
+    @InheritConfiguration
+    Post mapToEntity(PostDto postDto);
 }

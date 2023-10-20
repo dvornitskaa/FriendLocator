@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface PostServiceI {
     String addPost(PostDto postDto);
-    List<PostDto> allFriendsPosts(String userName);
+    List<PostDto> allPosts(String userName);
 }

@@ -22,6 +22,7 @@ public class Post {
     String text;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
     Date plannedDate;
+    Boolean privateCheck;
     @ManyToOne
     @JoinColumn(name = "location_id") // Связь будет установлена через поле location_id в таблице постов
     Location location;

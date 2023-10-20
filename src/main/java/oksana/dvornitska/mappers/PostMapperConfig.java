@@ -12,20 +12,21 @@ public interface PostMapperConfig {
             @Mapping(target = "id", source = "id"),
             @Mapping(target = "text", source = "text"),
             @Mapping(target = "plannedDate", source = "plannedDate"),
+            @Mapping(target = "privateCheck", source = "privateCheck"),
             @Mapping(target = "username", source = "user.name"),
             @Mapping(target = "country", source = "location.country"),
             @Mapping(target = "city", source = "location.city"),
 
     })
     PostDto mapToDto(Post post);
-//    @Mappings({
-//            @Mapping(target = "id", source = "id"),
-//            @Mapping(target = "text", source = "text"),
-//            @Mapping(target = "plannedDate", source = "plannedDate"),
-//            @Mapping(target = "user.name", source = "username"),
-//            @Mapping(target = "country", source = "country"),
-//            @Mapping(target = "city", source = "city"),
-//
-//    })
-    //Post mapToEntity(PostDto postDto);
+    @Mappings({
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "text", source = "text"),
+            @Mapping(target = "plannedDate", source = "plannedDate"),
+            @Mapping(target = "privateCheck", source = "privateCheck"),
+            @Mapping(target = "location.country", source = "country"),
+            @Mapping(target = "location.city", source = "city"),
+
+    })
+    Post mapToEntity(PostDto postDto);
 }
