@@ -22,7 +22,10 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
+    @GetMapping
+    public String hello (){
+        return "hello";
+    }
     @PostMapping
     public ResponseEntity<String> create(@RequestBody UserDto userDto){
         userService.addUser(userDto);
