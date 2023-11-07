@@ -36,6 +36,7 @@ public class UserControllerTest {
                 .andExpect(content().string("hello"));
     }
 
+
     @Test
     public void testCreate() throws Exception {
         String userDtoJson = "{\"name\":\"testuser\",\"country\":\"testcountry\",\"city\":\"testcity\"}"; // Пример JSON-представления UserDto
