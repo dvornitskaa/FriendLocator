@@ -10,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CountryDto {
+public class LocationDto {
     Long id;
-    String name;
+    String country;
     String city;
 }

@@ -17,6 +17,7 @@ public class PostDto {
     String text;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
     Date plannedDate;
+    Boolean privateCheck;
     String username;
     String country;
     String city;
