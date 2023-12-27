@@ -24,35 +24,33 @@ import java.util.stream.Collectors;
 public class FriendService implements FriendServiceI {
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    LocationRepository locationRepository;
-    @Autowired
-    PostRepository postRepository;
+
     @Override
     public String makeFriend(String userName, String friendName) {
         User user = userRepository.findUserByName(userName)
-                .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
+                .orElseThrow(() -> new UserNotFoundException(userName + " does not exist"));
         User userFriend = userRepository.findUserByName(friendName)
-                .orElseThrow(()-> new UserNotFoundException(friendName + " does not exist"));
+                .orElseThrow(() -> new UserNotFoundException(friendName + " does not exist"));
 
         user.getFriends().add(userFriend);
         userFriend.getFriends().add(user);
         userRepository.save(user);
         userRepository.save(userFriend);
-        log.info(String.format("%s friend is added to %s", friendName,userName));
+        log.info(String.format("%s friend is added to %s", friendName, userName));
         return "friend is added";
     }
+
     @Override
     public List<UserDto> findFriendsByCountry(String userName, String country) {
         User user = userRepository.findUserByName(userName)
-                .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
+                .orElseThrow(() -> new UserNotFoundException(userName + " does not exist"));
         return user.getFriends().stream().map(UserMapper.INSTANCE::mapToDto).collect(Collectors.toList());
     }
 
     @Override
     public List<UserDto> findAllFriendsLocation(String userName) {
         User user = userRepository.findUserByName(userName)
-                .orElseThrow(()-> new UserNotFoundException(userName + " does not exist"));
+                .orElseThrow(() -> new UserNotFoundException(userName + " does not exist"));
         List<UserDto> userDtos = new ArrayList<>();
         for (User friend : user.getFriends()) {
             UserDto userDto = UserMapper.INSTANCE.mapToDto(friend);

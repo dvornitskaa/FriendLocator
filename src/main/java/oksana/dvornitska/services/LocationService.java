@@ -22,10 +22,16 @@ import java.util.stream.Collectors;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LocationService implements LocationServiceI {
+
+    final UserRepository userRepository;
+
+    final LocationRepository locationRepository;
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    LocationRepository locationRepository;
+    public LocationService(UserRepository userRepository, LocationRepository locationRepository) {
+        this.userRepository = userRepository;
+        this.locationRepository = locationRepository;
+    }
+
     @Override
     public String updateLocation(String userName, String country, String city) {
         User user = userRepository.findUserByName(userName)
